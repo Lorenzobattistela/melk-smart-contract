@@ -12,7 +12,7 @@ function App() {
 
   return(
     <div>
-      <ConnectWallet account={account} setAccount={setAccount} balance={balance} />
+      <ConnectWallet setAccount={setAccount} />
       <InformationBoard/>
       <MintNft account={account} balance={balance} setBalance={setBalance}/>
     </div>

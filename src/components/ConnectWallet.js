@@ -1,7 +1,7 @@
 import '../App.css';
 import { ethers } from 'ethers';
 
-export default function ConnectWallet({account, setAccount, balance}){
+export default function ConnectWallet({setAccount}){
     const connectWallet = async (e) => {
         e.preventDefault();
         if(!window.ethereum) {
