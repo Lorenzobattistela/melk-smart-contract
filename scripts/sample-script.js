@@ -13,13 +13,16 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  const Nft = await hre.ethers.getContractFactory("NFT");
-  const nft = await Nft.deploy();
+  const Melk = await hre.ethers.getContractFactory("MelkTest")
+  const melk = await Melk.deploy();
 
-  await nft.deployed();
+  await melk.deployed();
 
-  console.log("NFT deployed to:", nft.address);
+  console.log("NFT deployed to:", melk.address);
+
+  await melk.addModule("module", "description");
+
+  await melk.mintCertificate("module", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506");
 
 }
 
