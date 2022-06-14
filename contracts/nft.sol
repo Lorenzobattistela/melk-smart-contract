@@ -13,7 +13,6 @@ contract MelkTest is ERC721URIStorage, AccessControl {
   Counters.Counter private _tokenIds;
   mapping(string => address[]) private studentModules;
   mapping(bytes32 => string) private moduleNames;
-  mapping(bytes32 => string) private moduleDescriptions;
 
   mapping(uint256 => bytes32) private tokenIdModules;
   mapping(uint256 => uint256) private tokenIdNumbers;
@@ -44,84 +43,73 @@ contract MelkTest is ERC721URIStorage, AccessControl {
     return super.supportsInterface(interfaceId);
   }
 
-  function addModule(string memory newModule, string memory description) external onlyAdmin {
+  function addModule(string memory newModule) external onlyAdmin {
     bytes32 module = keccak256(abi.encodePacked(newModule));
     require(
-      bytes(moduleDescriptions[module]).length == 0, 'Module already exists'
+      bytes(moduleNames[module]).length == 0, 'Module already exists'
     );
-    moduleDescriptions[module] = description;
     moduleNames[module] = newModule;
-  
   }
 
   function mintCertificate(
         string memory course,
         address studentAddress,
-        string memory username 
+        string memory username, 
+        string memory magicNumber
     ) external onlyMinter {
         studentModules[course].push(studentAddress);
-
         bytes32 encodedCourse = keccak256(abi.encodePacked(course));
         require(
-            bytes(moduleDescriptions[encodedCourse]).length != 0,
+            bytes(moduleNames[encodedCourse]).length != 0,
             'Invalid Module'
         );
-      
-
-        _mintCertificate(encodedCourse, username, studentAddress);
+        _mintCertificate(encodedCourse, username, studentAddress, magicNumber);
         emit StudentFinishedModule(studentAddress, course);
     }
 
     function _mintCertificate(
         bytes32 encodedCourse,
         string memory username, 
-        address walletAddress
+        address walletAddress, 
+        string memory magicNumber
     ) internal {
         _tokenIds.increment();
-
         uint256 newTokenID = _tokenIds.current();
-
-        tokenIdModules[newTokenID] = encodedCourse;
-
+        tokenIdModules[newTokenID] = encodedCourse; // says that the token X is for module Y
         // console.log('TokenID: %s', finalTokenUri);
         _safeMint(walletAddress, newTokenID);
-        _setTokenURI(newTokenID, username, walletAddress);
+        _setTokenURI(newTokenID, username, walletAddress, magicNumber);
     }
 
-    function _setTokenURI(uint256 tokenId, string memory username, address walletAddress)
+    function _setTokenURI(uint256 tokenId, string memory username, address walletAddress, string memory magicNumber)
         public
         view
         virtual
         returns (string memory)
     {
         string memory course = moduleNames[tokenIdModules[tokenId]];
-        uint256 newStudentID = tokenId;
         string memory finalSvg = string(
             abi.encodePacked(
                 baseSVG,
                 course,
                 svgPart2,
-                Strings.toString(newStudentID),
+                Strings.toString(tokenId),
                 svgPart3,
                 username,
                 svgPart4
             )
         ); 
 
-        walletAddress;
-        string memory cohort = "abcd";
         string memory metadata = string(
             abi.encodePacked(
-                '{"name": "WEB3DEV Bootcamp", ',
+                '{"name": "Melk - Learn To Earn", ',
                 '"attributes": [ { "trait_type": "course", "value": "',
                 course,
-                '"},{"trait_type": "cohort", "value": "',
+                '"},{"trait_type": "discord username", "value": "',
                 username,
-                '"},{"trait_type": "number", "value": "',
-                Strings.toString(newStudentID),
-                '"}], "description": "',
-                cohort,
-                '", "image": "data:image/svg+xml;base64,',
+                '"}, {"trait_type": "magic number", "value": "', magicNumber,'"}, {"trait_type": "number", "value": "',
+                Strings.toString(tokenId),
+                '"}, {"trait_type": "wallet", "value": "', walletAddress,'"}], "image": "data:image/svg+xml;base64,',
                 Base64.encode(bytes(finalSvg)),
                 '"}'
             )
