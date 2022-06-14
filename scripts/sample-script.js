@@ -20,9 +20,9 @@ async function main() {
 
   console.log("NFT deployed to:", melk.address);
 
-  await melk.addModule("module", "description");
+  await melk.addModule("module");
 
-  await melk.mintCertificate("module", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506");
+  await melk.mintCertificate("module", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506", "12432", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB");
 
 }
 

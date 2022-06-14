@@ -55,7 +55,8 @@ contract MelkTest is ERC721URIStorage, AccessControl {
         string memory course,
         address studentAddress,
         string memory username, 
-        string memory magicNumber
+        string memory magicNumber,
+        string memory wallet
     ) external onlyMinter {
         studentModules[course].push(studentAddress);
         bytes32 encodedCourse = keccak256(abi.encodePacked(course));
@@ -63,7 +64,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
             bytes(moduleNames[encodedCourse]).length != 0,
             'Invalid Module'
         );
-        _mintCertificate(encodedCourse, username, studentAddress, magicNumber);
+        _mintCertificate(encodedCourse, username, studentAddress, magicNumber, wallet);
         emit StudentFinishedModule(studentAddress, course);
     }
 
@@ -71,17 +72,18 @@ contract MelkTest is ERC721URIStorage, AccessControl {
         bytes32 encodedCourse,
         string memory username, 
         address walletAddress, 
-        string memory magicNumber
+        string memory magicNumber,
+        string memory wallet
     ) internal {
         _tokenIds.increment();
         uint256 newTokenID = _tokenIds.current();
         tokenIdModules[newTokenID] = encodedCourse; // says that the token X is for module Y
         // console.log('TokenID: %s', finalTokenUri);
         _safeMint(walletAddress, newTokenID);
-        _setTokenURI(newTokenID, username, walletAddress, magicNumber);
+        _setTokenURI(newTokenID, username, walletAddress, magicNumber, wallet);
     }
 
-    function _setTokenURI(uint256 tokenId, string memory username, address walletAddress, string memory magicNumber)
+    function _setTokenURI(uint256 tokenId, string memory username, address walletAddress, string memory magicNumber, string memory wallet)
         public
         view
         virtual
@@ -100,6 +102,8 @@ contract MelkTest is ERC721URIStorage, AccessControl {
             )
         ); 
 
+        // {"trait_type": "wallet", "value": "', walletAddress,'"}],
+        walletAddress;
         string memory metadata = string(
             abi.encodePacked(
                 '{"name": "Melk - Learn To Earn", ',
@@ -109,7 +113,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
                 username,
                 '"}, {"trait_type": "magic number", "value": "', magicNumber,'"}, {"trait_type": "number", "value": "',
                 Strings.toString(tokenId),
-                '"}, {"trait_type": "wallet", "value": "', walletAddress,'"}], "image": "data:image/svg+xml;base64,',
+                '"}, {"trait_type": "wallet", "value": "', wallet,'"}],  "image": "data:image/svg+xml;base64,',
                 Base64.encode(bytes(finalSvg)),
                 '"}'
             )
