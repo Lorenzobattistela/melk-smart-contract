@@ -78,7 +78,6 @@ contract MelkTest is ERC721URIStorage, AccessControl {
         _tokenIds.increment();
         uint256 newTokenID = _tokenIds.current();
         tokenIdModules[newTokenID] = encodedCourse; // says that the token X is for module Y
-        // console.log('TokenID: %s', finalTokenUri);
         _safeMint(walletAddress, newTokenID);
         _setTokenURI(newTokenID, username, walletAddress, magicNumber, wallet);
     }
@@ -101,8 +100,6 @@ contract MelkTest is ERC721URIStorage, AccessControl {
                 svgPart4
             )
         ); 
-
-        // {"trait_type": "wallet", "value": "', walletAddress,'"}],
         walletAddress;
         string memory metadata = string(
             abi.encodePacked(

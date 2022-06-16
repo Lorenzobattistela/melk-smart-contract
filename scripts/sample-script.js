@@ -17,7 +17,6 @@ async function main() {
   const melk = await Melk.deploy();
 
   await melk.deployed();
-
   console.log("NFT deployed to:", melk.address);
 
   await melk.addModule("module");
