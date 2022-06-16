@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/lorenzo/Code/mission10/mission10/contracts/nft.sol": {
-      "lastModificationDate": 1655338373298,
-      "contentHash": "43dea281b524bd9e26a868903cdf79ef",
+      "lastModificationDate": 1655381279044,
+      "contentHash": "3f32a4e63a01b61652491d6b70b88c3c",
       "sourceName": "contracts/nft.sol",
       "solcConfig": {
         "version": "0.8.4",

@@ -26,16 +26,15 @@ contract MelkTest is ERC721URIStorage, AccessControl {
   string svgPart3 = "</text></g><g><rect x='48.13' y='192.85' class='st11' width='497.66' height='96.99'/> <text transform='matrix(1 0 0 1 48.1271 282.8495)' class='st4 st2 st14'>";
 
   string svgPart4 = "</text><rect x='38.13' y='32.02' class='st15' width='55.77' height='48.46'/><rect x='119.2' y='32.02' class='st16' width='55.77' height='48.46'/><rect x='201.18' y='32.02' class='st5' width='55.77' height='48.46'/><text transform='matrix(1.2764 0 0 1 138.4717 101.3228)' class='st13 st2 st18'>-</text><text transform='matrix(1.1781 0 0 1 227.6772 105.4309)' class='st13 st2 st19'>+</text></g></svg>";
-
+  
   event StudentFinishedModule(
     address indexed studentAddress,
     string indexed moduleName
   );
 
-  // svg here
-
+  event CourseAdded(string indexed moduleName);
   constructor() ERC721 ('Projeto MELK', 'MELK') {
-    _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    _setupRole(DEFAULT_ADMIN_ROLE, 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199);
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControl) returns (bool)
@@ -43,12 +42,13 @@ contract MelkTest is ERC721URIStorage, AccessControl {
     return super.supportsInterface(interfaceId);
   }
 
-  function addModule(string memory newModule) external onlyAdmin {
+  function addModule(string memory newModule) external  {
     bytes32 module = keccak256(abi.encodePacked(newModule));
     require(
       bytes(moduleNames[module]).length == 0, 'Module already exists'
     );
     moduleNames[module] = newModule;
+    emit CourseAdded(newModule);
   }
 
   function mintCertificate(
@@ -116,14 +116,13 @@ contract MelkTest is ERC721URIStorage, AccessControl {
             )
         );
         string memory json = Base64.encode(bytes(metadata));
-        console.log(string(abi.encodePacked('data:application/json;base64,', json)));
         return string(abi.encodePacked('data:application/json;base64,', json));
     }
 
     modifier onlyAdmin() {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
-            'Caller is not an Window Admin'
+            'Caller is not an Window Admin (admin)'
         );
         _;
     }
@@ -131,10 +130,11 @@ contract MelkTest is ERC721URIStorage, AccessControl {
     modifier onlyMinter() {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
-            'Caller is not an Window Admin'
+            'Caller is not an Window Admin (minter)'
         );
         _;
     }
+
 }
 
 

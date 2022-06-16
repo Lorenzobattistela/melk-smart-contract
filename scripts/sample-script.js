@@ -4,6 +4,7 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const ethers = require('ethers');
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -16,12 +17,13 @@ async function main() {
   const Melk = await hre.ethers.getContractFactory("MelkTest")
   const melk = await Melk.deploy();
 
+  
   await melk.deployed();
   console.log("NFT deployed to:", melk.address);
 
-  await melk.addModule("module");
+  // await melk.addModule("module");
 
-  await melk.mintCertificate("module", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506", "12432", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB");
+  // await melk.mintCertificate("module", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506", "12432", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB");
 
 }
 
