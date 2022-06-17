@@ -54,9 +54,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
   function mintCertificate(
         string memory course,
         address studentAddress,
-        string memory username, 
-        string memory magicNumber,
-        string memory wallet
+        string memory tokenUri
     ) external onlyMinter {
         studentModules[course].push(studentAddress);
         bytes32 encodedCourse = keccak256(abi.encodePacked(course));
@@ -64,60 +62,58 @@ contract MelkTest is ERC721URIStorage, AccessControl {
             bytes(moduleNames[encodedCourse]).length != 0,
             'Invalid Module'
         );
-        _mintCertificate(encodedCourse, username, studentAddress, magicNumber, wallet);
+        _mintCertificate(encodedCourse, tokenUri, studentAddress);
         emit StudentFinishedModule(studentAddress, course);
     }
 
     function _mintCertificate(
         bytes32 encodedCourse,
-        string memory username, 
-        address walletAddress, 
-        string memory magicNumber,
-        string memory wallet
+        string memory tokenUri,
+        address studentAddress
     ) internal {
         _tokenIds.increment();
         uint256 newTokenID = _tokenIds.current();
         tokenIdModules[newTokenID] = encodedCourse; // says that the token X is for module Y
-        _safeMint(walletAddress, newTokenID);
-        _setTokenURI(newTokenID, username, walletAddress, magicNumber, wallet);
+        _safeMint(studentAddress, newTokenID);
+        _setTokenURI(newTokenID, tokenUri);
     }
 
-    function _setTokenURI(uint256 tokenId, string memory username, address walletAddress, string memory magicNumber, string memory wallet)
-        public
-        view
-        virtual
-        returns (string memory)
-    {
-        string memory course = moduleNames[tokenIdModules[tokenId]];
-        string memory finalSvg = string(
-            abi.encodePacked(
-                baseSVG,
-                course,
-                svgPart2,
-                Strings.toString(tokenId),
-                svgPart3,
-                username,
-                svgPart4
-            )
-        ); 
-        walletAddress;
-        string memory metadata = string(
-            abi.encodePacked(
-                '{"name": "Melk - Learn To Earn", ',
-                '"attributes": [ { "trait_type": "course", "value": "',
-                course,
-                '"},{"trait_type": "discord username", "value": "',
-                username,
-                '"}, {"trait_type": "magic number", "value": "', magicNumber,'"}, {"trait_type": "number", "value": "',
-                Strings.toString(tokenId),
-                '"}, {"trait_type": "wallet", "value": "', wallet,'"}],  "image": "data:image/svg+xml;base64,',
-                Base64.encode(bytes(finalSvg)),
-                '"}'
-            )
-        );
-        string memory json = Base64.encode(bytes(metadata));
-        return string(abi.encodePacked('data:application/json;base64,', json));
-    }
+    // function _setTokenURI(uint256 tokenId, string memory username, address walletAddress, string memory magicNumber, string memory wallet)
+    //     public
+    //     view
+    //     virtual
+    //     returns (string memory)
+    // {
+    //     string memory course = moduleNames[tokenIdModules[tokenId]];
+    //     string memory finalSvg = string(
+    //         abi.encodePacked(
+    //             baseSVG,
+    //             course,
+    //             svgPart2,
+    //             Strings.toString(tokenId),
+    //             svgPart3,
+    //             username,
+    //             svgPart4
+    //         )
+    //     ); 
+    //     walletAddress;
+    //     string memory metadata = string(
+    //         abi.encodePacked(
+    //             '{"name": "Melk - Learn To Earn", ',
+    //             '"attributes": [ { "trait_type": "course", "value": "',
+    //             course,
+    //             '"},{"trait_type": "discord username", "value": "',
+    //             username,
+    //             '"}, {"trait_type": "magic number", "value": "', magicNumber,'"}, {"trait_type": "number", "value": "',
+    //             Strings.toString(tokenId),
+    //             '"}, {"trait_type": "wallet", "value": "', wallet,'"}],  "image": "data:image/svg+xml;base64,',
+    //             Base64.encode(bytes(finalSvg)),
+    //             '"}'
+    //         )
+    //     );
+    //     string memory json = Base64.encode(bytes(metadata));
+    //     return string(abi.encodePacked('data:application/json;base64,', json));
+    // }
 
     modifier onlyAdmin() {
         require(
