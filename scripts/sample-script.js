@@ -5,6 +5,7 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 const ethers = require('ethers');
+const helpers = require('../helpers/svg').svgHelpers;
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -14,17 +15,19 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  const Melk = await hre.ethers.getContractFactory("MelkTest")
-  const melk = await Melk.deploy();
+  // const Melk = await hre.ethers.getContractFactory("MelkTest")
+  // const melk = await Melk.deploy();
 
   
-  await melk.deployed();
-  console.log("NFT deployed to:", melk.address);
+  // await melk.deployed();
+  // console.log("NFT deployed to:", melk.address);
 
   // await melk.addModule("module");
 
   // await melk.mintCertificate("module", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506", "12432", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB");
 
+  svg = helpers.buildSvg("lorenzo#7506", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "module2", "123213");
+  console.log(svg);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
