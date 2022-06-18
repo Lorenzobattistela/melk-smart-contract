@@ -37,6 +37,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
       bytes(moduleNames[module]).length == 0, 'Module already exists'
     );
     moduleNames[module] = newModule;
+    console.log("Module added: ", newModule);
     emit CourseAdded(newModule);
   }
 
@@ -45,6 +46,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
         address studentAddress,
         string memory tokenUri
     ) external onlyMinter {
+        console.log("chegou");
         studentModules[course].push(studentAddress);
         bytes32 encodedCourse = keccak256(abi.encodePacked(course));
         require(

@@ -10,18 +10,14 @@ let svgPart4 = "</text><rect x='38.13' y='32.02' class='st15' width='55.77' heig
 
 
 exports.svgHelpers = {
-    getBaseSvg: function() {
-        return baseSVG;
-    },
-
-    buildSvg: function(discordName, walletAddress, module, magicNum) {
+    buildTokenUri: function(discordName, walletAddress, module, magicNum) {
        let finalSvg = String(
-            baseSVG,
-            module,
-            svgPart2,
-            magicNum,
-            svgPart3,
-            discordName,
+            baseSVG +
+            module +
+            svgPart2 +
+            magicNum +
+            svgPart3 +
+            discordName +
             svgPart4
        )
 
