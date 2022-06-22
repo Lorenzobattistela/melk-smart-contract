@@ -31,7 +31,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
     return super.supportsInterface(interfaceId);
   }
 
-  function addModule(string memory newModule) external  {
+  function addModule(string memory newModule) external {
     bytes32 module = keccak256(abi.encodePacked(newModule));
     require(
       bytes(moduleNames[module]).length == 0, 'Module already exists'
