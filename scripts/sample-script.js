@@ -23,10 +23,7 @@ async function main() {
 
   await melk.addModule("module2");
 
-
-  tokenUri = helpers.buildTokenUri("lorenzo#7506", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "module2", "13");
-  
-  await melk.mintCertificate("module2","0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", tokenUri )
+  await melk.mintCertificate("module2","0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB", "lorenzo#7506", "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB")
 }
 
 // We recommend this pattern to be able to use async/await everywhere
