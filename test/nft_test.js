@@ -1,5 +1,7 @@
-const { expect } = require("chai");
+const { expect, use } = require("chai");
 const { ethers } = require("hardhat");
+const { solidity } = require("ethereum-waffle");
+use(solidity);
 
 describe("NFT", function () {
     it("Should deploy the NFT contract", async function() {
@@ -16,7 +18,6 @@ describe("NFT", function () {
             describe("Correct parameters", function() {
                 it("Should add the module melk1 correctly", async function () {
                     let moduleName = "melk1";
-                    const Web3  = require("web3")
                     const abiDecoder = require("abi-decoder")
                     let tx = await melk.addModule(moduleName);
                     let abi = require("../artifacts/contracts/nft.sol/MelkTest.json").abi;
@@ -27,14 +28,18 @@ describe("NFT", function () {
                     
                     expect(functionName).to.equal("addModule");
                     expect(value).to.equal(moduleName);
+
                 });
             });
 
             describe("Module already exists", function() {
                 it("Should not execute", async function() {
                     let moduleName = "melk1";
+                    await expect(melk.addModule(moduleName)).to.be.revertedWith("VM Exception while processing transaction: reverted with reason string 'Module already exists'");
                 });
             });
         });
+
+        
     });
 });
