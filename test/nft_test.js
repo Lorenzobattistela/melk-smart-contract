@@ -40,6 +40,27 @@ describe("NFT", function () {
             });
         });
 
-        
+        describe("Test smart contract minting certificate", function() {
+            describe("Correct parameters", function() {
+                it("Should mint the certficate correctly", async function () {
+                    let course = "melk1";
+                    let studentAddress = "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB";
+                    let discordUser = "lorenzo#7506";
+                    let wallet = "0x422F4B687050f60DfAA64BF46AabEf9dEE9605aB";
+
+                    await expect(melk.mintCertificate(course, studentAddress, discordUser, wallet)).to.emit(melk, "StudentFinishedModule");
+                });
+            });
+
+            describe("Wrong parameters", function() {
+                it("Should not execute", async function () {
+                    let course = "melk1";
+                    let studentAddress = "0x422DfAA64BF46AabEf9dEE9605aB";
+                    let discordUser = "lorenzo#7506";
+                    let wallet = "0x422DfAA64BF46AabEf9dEE9605aB";
+                    await expect(melk.mintCertificate(course, studentAddress, discordUser, wallet)).to.be.reverted;
+                });
+            });
+        });
     });
 });
