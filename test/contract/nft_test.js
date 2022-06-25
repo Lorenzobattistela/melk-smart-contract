@@ -21,7 +21,7 @@ describe("NFT", function () {
                         let moduleName = "melk1";
                         const abiDecoder = require("abi-decoder")
                         let tx = await melk.addModule(moduleName);
-                        let abi = require("../artifacts/contracts/nft.sol/MelkTest.json").abi;
+                        let abi = require("../../artifacts/contracts/nft.sol/MelkTest.json").abi;
                         abiDecoder.addABI(abi);
                         let decodedData = abiDecoder.decodeMethod(tx.data)
                         let functionName = decodedData.name;
