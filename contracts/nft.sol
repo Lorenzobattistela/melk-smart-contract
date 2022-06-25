@@ -34,7 +34,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
 
   event CourseAdded(string indexed moduleName);
   constructor() ERC721 ('Projeto MELK', 'MELK') {
-    _setupRole(DEFAULT_ADMIN_ROLE,0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
+    _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControl) returns (bool)
