@@ -128,7 +128,6 @@ contract MelkTest is ERC721URIStorage, AccessControl {
     }
 
     modifier onlyMinter() {
-        console.log(msg.sender);
         require(
             hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
             'Caller is not an Window Admin (minter)'
