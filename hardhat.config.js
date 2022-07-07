@@ -1,5 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
-require("dotenv").config
+require("dotenv").config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -17,12 +17,13 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
+
 module.exports = {
   solidity: "0.8.4",
   networks: {
-    goerli: {
-      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-      accounts: [`${process.env.POLYGON_PRIVATE_KEY}`]
+    mumbai: {
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+      accounts: [`${process.env.MUMBAI_PRIVATE_KEY}`]
     }
   }
 };

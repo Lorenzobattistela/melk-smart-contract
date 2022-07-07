@@ -115,7 +115,7 @@ contract MelkTest is ERC721URIStorage, AccessControl {
                )
            );
            string memory json = Base64.encode(bytes(metadata));
-
+           console.log(string(abi.encodePacked('data:application/json;base64,', json)));
            return string(abi.encodePacked('data:application/json;base64,', json));
        }
 
